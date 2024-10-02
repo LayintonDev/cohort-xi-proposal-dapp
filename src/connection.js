@@ -34,7 +34,7 @@ export const appkit = createAppKit({
     projectId,
     allowUnsupportedChain: "off",
     allWallets: "SHOW",
-    defaultNetwork: liskSepoliaNetwork,
+    defaultNetwork: sepolia,
     enableEIP6963: true,
     features: {
         analytics: true,

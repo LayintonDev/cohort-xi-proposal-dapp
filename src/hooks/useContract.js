@@ -5,12 +5,13 @@ import ABI from "../ABI/proposal.json";
 
 const useContract = (withSigner = false) => {
     const { readOnlyProvider, signer } = useRunners();
+  
 
     return useMemo(() => {
         if (withSigner) {
             if (!signer) return null;
             return new Contract(
-                import.meta.env.VITE_APPKIT_PROJECT_ID,
+                import.meta.env.VITE_CONTRACT_ADDRESS,
                 ABI,
                 signer
             );

@@ -5,6 +5,7 @@ import { useAppKitAccount } from "@reown/appkit/react";
 import { useAppKitNetwork } from "@reown/appkit/react";
 import { liskSepoliaNetwork } from "../connection";
 import { parseEther } from "ethers";
+import { sepolia } from "@reown/appkit/networks";
 
 const useCreateProposal = () => {
     const contract = useContract(true);
@@ -26,7 +27,7 @@ const useCreateProposal = () => {
                 toast.error("Connect your wallet!");
                 return;
             }
-            if (Number(chainId) !== liskSepoliaNetwork.chainId) {
+            if (Number(chainId) !== sepolia.chainId) {
                 toast.error("You are not connected to the right network");
                 return;
             }
