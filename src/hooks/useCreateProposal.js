@@ -13,6 +13,11 @@ const useCreateProposal = () => {
     const { chainId } = useAppKitNetwork();
     return useCallback(
         async (description, recipient, amount, duration, minVote) => {
+            console.log({
+                description,
+                recipient,
+                amount
+            })
             if (
                 !description ||
                 !recipient ||

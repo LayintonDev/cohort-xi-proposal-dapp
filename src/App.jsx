@@ -33,12 +33,13 @@ function App() {
             const proposalCount = Number(
                 await readOnlyProposalContract.proposalCount()
             );
+       
 
             const proposalsIds = Array.from(
                 { length: proposalCount },
                 (_, i) => i + 1
             );
-
+            
             const calls = proposalsIds.map((id) => ({
                 target: import.meta.env.VITE_CONTRACT_ADDRESS,
                 callData: itf.encodeFunctionData("proposals", [id]),
@@ -51,10 +52,9 @@ function App() {
 
             const decodedResults = responses.map((res) =>
                 itf.decodeFunctionResult("proposals", res.returnData)
-            );
-
-            const data = decodedResults.map((proposalStruct, i) => ({
-                proposalId: i + 1,
+            );                                         
+            const data = decodedResults.map((proposalStruct) => ({
+                proposalId: proposalStruct.proposalId,
                 description: proposalStruct.description,
                 amount: proposalStruct.amount,
                 minRequiredVote: proposalStruct.minVotesToPass,
@@ -100,11 +100,11 @@ function App() {
 
     useEffect(() => {
         if(!readOnlyProposalContract) return;
-        readOnlyProposalContract.on("ProposalCreated", onProposalCreated);
-        readOnlyProposalContract.on("Voted", onVoted);
+        readOnlyProposalContract.addListener("ProposalCreated", onProposalCreated);
+        readOnlyProposalContract.addListener("Voted", onVoted);
         fetchProposals();
-
         return () => {
+            if(!readOnlyProposalContract) return;
            readOnlyProposalContract.removeListener("ProposalCreated", onProposalCreated)
            readOnlyProposalContract.removeListener("Voted", onVoted)
         }

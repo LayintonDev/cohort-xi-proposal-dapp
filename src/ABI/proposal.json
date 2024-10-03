@@ -190,6 +190,11 @@
         "name": "proposals",
         "outputs": [
             {
+                "internalType": "uint256",
+                "name": "proposalId",
+                "type": "uint256"
+            },
+            {
                 "internalType": "string",
                 "name": "description",
                 "type": "string"
