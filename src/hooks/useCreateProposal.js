@@ -12,12 +12,12 @@ const useCreateProposal = () => {
     const { address } = useAppKitAccount();
     const { chainId } = useAppKitNetwork();
     return useCallback(
-        async (description, recipient, amount, deadline, minVote) => {
+        async (description, recipient, amount, duration, minVote) => {
             if (
                 !description ||
                 !recipient ||
                 !amount ||
-                !deadline ||
+                !duration ||
                 !minVote
             ) {
                 toast.error("Missing field(s)");
@@ -27,7 +27,7 @@ const useCreateProposal = () => {
                 toast.error("Connect your wallet!");
                 return;
             }
-            if (Number(chainId) !== sepolia.chainId) {
+            if (Number(chainId) !== liskSepoliaNetwork.chainId) {
                 toast.error("You are not connected to the right network");
                 return;
             }
@@ -42,14 +42,14 @@ const useCreateProposal = () => {
                     description,
                     recipient,
                     parseEther(amount),
-                    deadline,
+                    duration,
                     minVote
                 );
                 const tx = await contract.createProposal(
                     description,
                     recipient,
                     parseEther(amount),
-                    deadline,
+                    duration,
                     minVote,
                     {
                         gasLimit: (estimatedGas * BigInt(120)) / BigInt(100),
