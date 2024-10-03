@@ -100,8 +100,8 @@ function App() {
 
     useEffect(() => {
         if(!readOnlyProposalContract) return;
-        readOnlyProposalContract.addListener("ProposalCreated", onProposalCreated);
-        readOnlyProposalContract.addListener("Voted", onVoted);
+        readOnlyProposalContract.on("ProposalCreated", onProposalCreated);
+        readOnlyProposalContract.on("Voted", onVoted);
         fetchProposals();
         return () => {
             if(!readOnlyProposalContract) return;
