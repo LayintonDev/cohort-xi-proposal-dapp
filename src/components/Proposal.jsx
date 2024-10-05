@@ -11,7 +11,7 @@ const Proposal = ({
     deadline,
     executed,
 }) => {
-    const { voteForProposal } = useProposalAction();
+    const { voteForProposal, executeProposal } = useProposalAction();
     return (
         <Box className="bg-slate-400 rounded-md shadow-sm p-4 w-96">
             <Text className="text-2xl mb-4">Proposals</Text>
@@ -45,9 +45,9 @@ const Proposal = ({
             </Box>
             <Button
                 className="bg-blue-500 text-white font-bold w-full mt-4 p-4 rounded-md shadow-sm"
-                onClick={() => voteForProposal(id)}
+                onClick={() => voteCount == minRequiredVote && !executed? executeProposal(id) : voteForProposal(id)}
             >
-                Vote
+                {voteCount == minRequiredVote ? executed ? "Executed":"Execute" : "Vote"}
             </Button>
         </Box>
     );

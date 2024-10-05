@@ -100,7 +100,31 @@ const useCreateProposal = () => {
         [contract]
     );
 
-    const executeProposal = useCallback(() => {}, []);
+    const executeProposal = useCallback(() => {
+        async (id) => {
+            if (!id) {
+                toast.error("Id required!");
+                return;
+            }
+            try {
+                const tx = await contract.executeProposal(id);
+                const reciept = await tx.wait();
+                if (reciept.status === 1) {
+                    toast.success("Executed successfully");
+                    return;
+                }
+                toast.error("Execution failed");
+            } catch (error) {
+                // console.error("error while voting: ", error);
+                // toast.error(error.reason);
+
+                const errorDecoder = ErrorDecoder.create();
+
+                const decodedError = await errorDecoder.decode(error);
+
+                console.log("decodedError: ", decodedError);
+            }}
+    }, [contract]);
 
     return { createProposal, voteForProposal, executeProposal };
 };
