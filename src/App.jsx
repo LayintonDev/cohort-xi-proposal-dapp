@@ -1,5 +1,6 @@
 import { Box } from "@radix-ui/themes";
 import CreateProposalModal from "./components/CreateProposalModal";
+import Layout from "./components/Layout";
 import Proposals from "./components/Proposals";
 import { useProposals } from "./context/proposalsContext";
 

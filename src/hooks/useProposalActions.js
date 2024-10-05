@@ -93,14 +93,15 @@ const useCreateProposal = () => {
                 const errorDecoder = ErrorDecoder.create();
 
                 const decodedError = await errorDecoder.decode(error);
-
+                toast.error(decodedError.reason);
+                return;
                 console.log("decodedError: ", decodedError);
             }
         },
         [contract]
     );
 
-    const executeProposal = useCallback(() => {
+    const executeProposal = useCallback(
         async (id) => {
             if (!id) {
                 toast.error("Id required!");
@@ -121,10 +122,11 @@ const useCreateProposal = () => {
                 const errorDecoder = ErrorDecoder.create();
 
                 const decodedError = await errorDecoder.decode(error);
-
+                toast.error(decodedError.reason);
+                return;
                 console.log("decodedError: ", decodedError);
             }}
-    }, [contract]);
+, [contract]);
 
     return { createProposal, voteForProposal, executeProposal };
 };
