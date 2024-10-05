@@ -1,17 +1,17 @@
 import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import { formatEther } from "ethers";
-import useVoteForProposal from "../hooks/useVoteForProposal";
+import useProposalAction from "../hooks/useProposalActions";
 
 const Proposal = ({
-    proposalId,
+    id,
     description,
     amount,
     minRequiredVote,
-    votecount,
+    voteCount,
     deadline,
     executed,
 }) => {
-    const handleVote = useVoteForProposal();
+    const { voteForProposal } = useProposalAction();
     return (
         <Box className="bg-slate-400 rounded-md shadow-sm p-4 w-96">
             <Text className="text-2xl mb-4">Proposals</Text>
@@ -30,7 +30,7 @@ const Proposal = ({
                 </Flex>
                 <Flex className="flex gap-4">
                     <Text>Vote Count:</Text>
-                    <Text className="font-bold">{Number(votecount)}</Text>
+                    <Text className="font-bold">{Number(voteCount)}</Text>
                 </Flex>
                 <Flex className="flex gap-4">
                     <Text>Deadline:</Text>
@@ -43,7 +43,10 @@ const Proposal = ({
                     <Text className="font-bold">{String(executed)}</Text>
                 </Flex>
             </Box>
-            <Button onClick={() => handleVote(BigInt(proposalId))} className="bg-blue-500 text-white font-bold w-full mt-4 p-4 rounded-md shadow-sm">
+            <Button
+                className="bg-blue-500 text-white font-bold w-full mt-4 p-4 rounded-md shadow-sm"
+                onClick={() => voteForProposal(id)}
+            >
                 Vote
             </Button>
         </Box>

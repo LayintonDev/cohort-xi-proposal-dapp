@@ -1,10 +1,10 @@
 import { XCircleIcon } from "@heroicons/react/16/solid";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
-import useCreateProposal from "../hooks/useCreateProposal";
+import useProposalAction from "../hooks/useProposalActions";
 
 const CreateProposalModal = () => {
-    const handleCreateProposal = useCreateProposal();
+    const { createProposal } = useProposalAction();
     const [state, setState] = useState({
         description: "",
         recipient: "",
@@ -112,7 +112,7 @@ const CreateProposalModal = () => {
                         <button
                             className="block w-full bg-blue-500 p-4 text-white items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
                             onClick={() =>
-                                handleCreateProposal(
+                                createProposal(
                                     description,
                                     recipient,
                                     amount,

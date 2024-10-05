@@ -5,19 +5,14 @@ import { useAppKitAccount } from "@reown/appkit/react";
 import { useAppKitNetwork } from "@reown/appkit/react";
 import { liskSepoliaNetwork } from "../connection";
 import { parseEther } from "ethers";
-import { sepolia } from "@reown/appkit/networks";
+import { ErrorDecoder } from "ethers-decode-error";
 
 const useCreateProposal = () => {
     const contract = useContract(true);
     const { address } = useAppKitAccount();
     const { chainId } = useAppKitNetwork();
-    return useCallback(
+    const createProposal = useCallback(
         async (description, recipient, amount, duration, minVote) => {
-            console.log({
-                description,
-                recipient,
-                amount
-            })
             if (
                 !description ||
                 !recipient ||
@@ -50,6 +45,7 @@ const useCreateProposal = () => {
                     duration,
                     minVote
                 );
+
                 const tx = await contract.createProposal(
                     description,
                     recipient,
@@ -60,7 +56,7 @@ const useCreateProposal = () => {
                         gasLimit: (estimatedGas * BigInt(120)) / BigInt(100),
                     }
                 );
-                const reciept = await tx.wait();
+                const reciept = await tx.wait(20);
 
                 if (reciept.status === 1) {
                     toast.success("Proposal Creation successful");
@@ -75,6 +71,38 @@ const useCreateProposal = () => {
         },
         [address, chainId, contract]
     );
+
+    const voteForProposal = useCallback(
+        async (id) => {
+            if (!id) {
+                toast.error("Id required!");
+                return;
+            }
+            try {
+                const tx = await contract.vote(id);
+                const reciept = await tx.wait();
+                if (reciept.status === 1) {
+                    toast.success("Voting successful");
+                    return;
+                }
+                toast.error("Voting failed");
+            } catch (error) {
+                // console.error("error while voting: ", error);
+                // toast.error(error.reason);
+
+                const errorDecoder = ErrorDecoder.create();
+
+                const decodedError = await errorDecoder.decode(error);
+
+                console.log("decodedError: ", decodedError);
+            }
+        },
+        [contract]
+    );
+
+    const executeProposal = useCallback(() => {}, []);
+
+    return { createProposal, voteForProposal, executeProposal };
 };
 
 export default useCreateProposal;
